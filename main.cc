@@ -34,15 +34,15 @@ hitable *random_scene() {
     int i = 1;
     for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
-            float choose_mat = rand();
-            vec3 center(a+0.9*rand(),0.2,b+0.9*rand()); 
+            float choose_mat = rand_0_to_1();
+            vec3 center(a+0.9*rand_0_to_1(),0.2,b+0.9*rand_0_to_1()); 
             if ((center-vec3(4,0.2,0)).length() > 0.9) { 
                 if (choose_mat < 0.8) {  // diffuse
-                    list[i++] = new sphere(center, 0.2, new lambertian(vec3(rand()*rand(), rand()*rand(), rand()*rand())));
+                    list[i++] = new sphere(center, 0.2, new lambertian(vec3(rand_0_to_1()*rand_0_to_1(), rand_0_to_1()*rand_0_to_1(), rand_0_to_1()*rand_0_to_1())));
                 }
                 else if (choose_mat < 0.95) { // metal
                     list[i++] = new sphere(center, 0.2,
-                            new metal(vec3(0.5*(1 + rand()), 0.5*(1 + rand()), 0.5*(1 + rand())),  0.5*rand()));
+                            new metal(vec3(0.5*(1 + rand_0_to_1()), 0.5*(1 + rand_0_to_1()), 0.5*(1 + rand_0_to_1())),  0.5*rand_0_to_1()));
                 }
                 else {  // glass
                     list[i++] = new sphere(center, 0.2, new dielectric(1.5));
@@ -59,8 +59,8 @@ hitable *random_scene() {
 }
 
 int main() {
-    int nx = 1200;
-    int ny = 800;
+    int nx = 600;
+    int ny = 300;
     int ns = 10;
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
     hitable *list[5];
@@ -84,8 +84,8 @@ int main() {
         for (int i = 0; i < nx; i++) {
             vec3 col(0, 0, 0);
             for (int s=0; s < ns; s++) {
-                float u = float(i + rand()) / float(nx);
-                float v = float(j + rand()) / float(ny);
+                float u = float(i + rand_0_to_1()) / float(nx);
+                float v = float(j + rand_0_to_1()) / float(ny);
                 ray r = cam.get_ray(u, v);
                 vec3 p = r.point_at_parameter(2.0);
                 col += color(r, world,0);
